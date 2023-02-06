@@ -1,0 +1,140 @@
+---Que1
+---part1
+select Round(sum(SubTotal),2) as sale from [SalesLT].[SalesOrderHeader];
+Total Sale	865433.12
+
+---part2
+
+select  round(sum(LineTotal),2) as sale from [SalesLT].[SalesOrderDetail];
+Total Sale	708690.15
+
+
+
+---Que2
+
+
+select sa.CountryRegion,  sum(SubTotal) as sale, Rank() over(Order by sum(SubTotal) desc) as Rank
+from [SalesLT].[SalesOrderHeader] as soh
+inner join [SalesLT].[Address] sa
+on soh.BillToAddressID = sa.AddressID
+and soh.ShipToAddressID = sa.AddressID
+group by sa.CountryRegion 
+
+Total Sale-865433.1171
+Row-2
+
+
+
+---ques3
+
+select sa.CountryRegion, sa.StateProvince, sa.City, sum(SubTotal) as sale, Rank() over(Order by sum(SubTotal) desc) as Rank
+from [SalesLT].[SalesOrderHeader] as soh
+inner join [SalesLT].[Address] sa
+on soh.BillToAddressID = sa.AddressID
+and soh.ShipToAddressID = sa.AddressID
+group by sa.CountryRegion, sa.StateProvince, sa.City
+
+Total Sale-865433.1171
+Row-29
+
+---que4
+
+select Concat(sc.LastName,' ', sc.FirstName) as Name, sum(SubTotal) as sale, Rank() over(Order by sum(SubTotal) desc) as Rank
+from [SalesLT].[SalesOrderHeader] as soh
+inner join [SalesLT].[Customer] as sc
+on soh.CustomerID = sc.CustomerID
+group by Concat(sc.LastName,' ', sc.FirstName)
+
+Total Sale-865433.1171
+
+Row-32
+
+---que5
+
+select sc.CompanyName, sum(SubTotal) as sale, Rank() over(Order by sum(SubTotal) desc) as Rank
+from [SalesLT].[SalesOrderHeader] as soh
+inner join [SalesLT].[Customer] as sc
+on soh.CustomerID = sc.CustomerID
+group by sc.CompanyName
+
+Total Sale-865433.1171
+
+Row-32
+
+
+---que6
+
+
+
+select sgac.ProductCategoryName, sum(LineTotal) as sale
+from [SalesLT].[SalesOrderDetail] as sod
+inner join [SalesLT].[Product] as sp
+on sod.ProductID = sp.ProductID
+inner join [SalesLT].[ProductCategory] spc
+on sp.ProductCategoryID = spc.ProductCategoryID
+inner join [SalesLT].[vGetAllCategories] sgac
+on spc.ProductCategoryID = sgac.ProductCategoryID
+group by sgac.ProductCategoryName
+order by sum(LineTotal) desc;
+
+Total Sale-708690.1531
+
+Row-26
+
+---que7
+
+
+
+select sp.Name as ProductName, sum(LineTotal) as sale, Rank() over(Order by sum(LineTotal) desc) as Rank
+from [SalesLT].[SalesOrderDetail] as sod
+inner join [SalesLT].[Product] as sp
+on sod.ProductID = sp.ProductID
+group by sp.Name
+
+Total Sale-708690.1531
+
+
+Row-142
+
+
+---que8
+
+
+select sc.CompanyName, sum(SubTotal) as sale
+from [SalesLT].[SalesOrderHeader] as soh
+inner join [SalesLT].[Customer] as sc
+on soh.CustomerID = sc.CustomerID
+group by sc.CompanyName
+
+Total Sale-865433.1171
+
+Row-32
+
+---que9
+
+
+
+Select sc.CompanyName, sgac.ProductCategoryName, sum(LineTotal) as sales from [SalesLT].[SalesOrderDetail] sod
+inner join [SalesLT].[SalesOrderHeader] soh
+on sod.SalesOrderID = soh.SalesOrderID
+inner join [SalesLT].[Customer] sc
+on soh.CustomerID = sc.CustomerID
+inner join [SalesLT].[Product] sp
+on sod.ProductId = sp.ProductId
+inner join [SalesLT].[ProductCategory] spc
+on sp.ProductCategoryID  = spc.ProductCategoryID
+inner join [SalesLT].[vGetAllCategories] sgac
+on spc.ProductCategoryID = sgac.ProductCategoryID
+group by sc.CompanyName, sgac.ProductCategoryName
+order by sc.CompanyName,sum(LineTotal) desc;
+
+
+Total Sale-708690.1531
+
+
+Row-195
+
+
+
+
+
